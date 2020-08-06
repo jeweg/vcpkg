@@ -1,10 +1,8 @@
-include(vcpkg_common_functions)
-
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO onqtam/doctest
-    REF 2.3.4
-    SHA512 ca97da8e22684f2d901d0a9dc9c1d0c7126a850f75fe20c37a4d8bbc6f7eafc961313a6c58ca712f00465fff107e1b6b6d9557d2b04edb3029b0035bcfa6db20
+    REF 1c8da00c978c19e00a434b2b1f854fcffc9fba35 #version 2.4.0
+    SHA512 aa0d10a0fbd6d3b9f89c3d909bce332804610390a310c3f6ac89c44c76a07f00a8770d30d6481627572bdbd9dabccfe6c6f9f7b5fb6b323bf5120ec623dd358f
     HEAD_REF master
 )
 
@@ -20,7 +18,4 @@ vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/doctest)
 
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/lib)
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug)
-configure_file(${SOURCE_PATH}/LICENSE.txt ${CURRENT_PACKAGES_DIR}/share/doctest/copyright COPYONLY)
-
-# CMake integration test
-vcpkg_test_cmake(PACKAGE_NAME ${PORT})
+configure_file(${SOURCE_PATH}/LICENSE.txt ${CURRENT_PACKAGES_DIR}/share/${PORT}/copyright COPYONLY)
