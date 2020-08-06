@@ -43,6 +43,8 @@ vcpkg_install_cmake()
 file(GLOB EXES "${CURRENT_PACKAGES_DIR}/bin/*${CMAKE_EXECUTABLE_SUFFIX}")
 file(COPY ${EXES} DESTINATION ${CURRENT_PACKAGES_DIR}/tools)
 
+file(INSTALL ${CMAKE_CURRENT_LIST_DIR}/shaderc-config.cmake DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT})
+
 #Safe to remove as libs are static
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/bin)
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/bin)
