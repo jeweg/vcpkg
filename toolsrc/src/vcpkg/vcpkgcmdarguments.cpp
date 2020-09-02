@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include <vcpkg/base/system.debug.h>
 #include <vcpkg/base/system.print.h>
 
@@ -51,6 +49,7 @@ namespace vcpkg
             {VcpkgCmdArguments::BINARY_CACHING_FEATURE, args.binary_caching},
             {VcpkgCmdArguments::MANIFEST_MODE_FEATURE, args.manifest_mode},
             {VcpkgCmdArguments::COMPILER_TRACKING_FEATURE, args.compiler_tracking},
+            {VcpkgCmdArguments::REGISTRIES_FEATURE, args.registries_feature},
         };
 
         for (const auto& desc : flag_descriptions)
@@ -310,6 +309,7 @@ namespace vcpkg
                 {FEATURE_PACKAGES_SWITCH, &VcpkgCmdArguments::feature_packages},
                 {BINARY_CACHING_SWITCH, &VcpkgCmdArguments::binary_caching},
                 {WAIT_FOR_LOCK_SWITCH, &VcpkgCmdArguments::wait_for_lock},
+                {JSON_SWITCH, &VcpkgCmdArguments::json},
             };
 
             bool found = false;
@@ -606,7 +606,7 @@ namespace vcpkg
     void VcpkgCmdArguments::append_common_options(HelpTableFormatter& table)
     {
         static auto opt = [](StringView arg, StringView joiner, StringView value) {
-            return Strings::format("--%s%s%s", arg, joiner, value);
+            return Strings::concat("--", arg, joiner, value);
         };
 
         table.format(opt(TRIPLET_ARG, " ", "<t>"), "Specify the target architecture triplet. See 'vcpkg help triplet'");
@@ -625,6 +625,7 @@ namespace vcpkg
         table.format(opt(INSTALL_ROOT_DIR_ARG, "=", "<path>"), "(Experimental) Specify the install root directory");
         table.format(opt(PACKAGES_ROOT_DIR_ARG, "=", "<path>"), "(Experimental) Specify the packages root directory");
         table.format(opt(SCRIPTS_ROOT_DIR_ARG, "=", "<path>"), "(Experimental) Specify the scripts root directory");
+        table.format(opt(JSON_SWITCH, "", ""), "(Experimental) Request JSON output");
     }
 
     void VcpkgCmdArguments::imbue_from_environment()
@@ -730,6 +731,7 @@ namespace vcpkg
             {BINARY_CACHING_FEATURE, binary_caching},
             {MANIFEST_MODE_FEATURE, manifest_mode},
             {COMPILER_TRACKING_FEATURE, compiler_tracking},
+            {REGISTRIES_FEATURE, registries_feature},
         };
 
         for (const auto& flag : flags)
@@ -754,6 +756,7 @@ namespace vcpkg
         } flags[] = {
             {BINARY_CACHING_FEATURE, binary_caching_enabled()},
             {COMPILER_TRACKING_FEATURE, compiler_tracking_enabled()},
+            {REGISTRIES_FEATURE, registries_enabled()},
         };
 
         for (const auto& flag : flags)
